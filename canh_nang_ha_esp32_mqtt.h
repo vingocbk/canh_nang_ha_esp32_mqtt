@@ -14,7 +14,9 @@
 
 #define LED_TEST_AP  27 // D4 onchip GPIO2
 #define PIN_CONFIG 16       // D3 flash GPIO0
-#define PIN_LOA 13 //1 TX    //D6 GPIO12    
+#define PIN_LOA 13 //1 TX    //D6 GPIO12 
+#define PIN_BUTTON_UP 4
+#define PIN_BUTTON_DOWN 14
 
 #define sample_time 25      //thoi gian lay mau la 25 ms de tinh van toc
 #define SPEED_DEFAUT 120    //van toc dong co khi hoat dong binh thuong
@@ -102,6 +104,7 @@ void setPwmLedLightoff();
 void setPwmLedLightChange();
 void ConnecttoMqttServer();
 void callbackMqttBroker(char* topic, byte* payload, unsigned int length);
+void checkButtonUpDownClick();
 void reconnect();
 
 

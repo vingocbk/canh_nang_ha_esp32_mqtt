@@ -249,7 +249,7 @@ bool testWifi(String esid, String epass) {
         delay(500);
         ECHO(".");
         c++;
-        if(digitalRead(PIN_CONFIG) == LOW){
+        if(digitalRead(PIN_CONFIG) == LOW || digitalRead(PIN_BUTTON_UP) == LOW || digitalRead(PIN_BUTTON_DOWN) == LOW){
             break;
         }
     }
@@ -662,6 +662,28 @@ void setPwmLedLightChange(){
 
 }
 
+void checkButtonUpDownClick(){
+    if(digitalRead(PIN_BUTTON_UP) == LOW && digitalRead(PIN_BUTTON_DOWN) == HIGH){
+        digitalWrite(L1, LOW);
+        // digitalWrite(R2, LOW);
+        // delay(200);
+        digitalWrite(L2, HIGH);
+        // digitalWrite(R1, HIGH);
+    }else if(digitalRead(PIN_BUTTON_DOWN) == LOW && digitalRead(PIN_BUTTON_UP) == HIGH){
+        digitalWrite(L2, LOW);
+        // digitalWrite(R1, LOW);
+        // delay(200);
+
+        
+        digitalWrite(L1, HIGH);
+        // digitalWrite(R2, HIGH);
+
+    }else(){
+        digitalWrite(L1, LOW);
+        digitalWrite(L2, LOW);
+    }
+}
+
 
 void setup() {
     WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0); //disable brownout detector
@@ -678,7 +700,10 @@ void setup() {
     pinMode(LED_TEST_AP, OUTPUT);
     pinMode(PIN_CONFIG, INPUT);
     pinMode(PIN_LOA, OUTPUT);
-    pinMode(BUTTON, INPUT_PULLUP);
+    // pinMode(BUTTON, INPUT_PULLUP);
+    pinMode(PIN_BUTTON_UP, INPUT_PULLUP);
+    pinMode(PIN_BUTTON_DOWN, INPUT_PULLUP);
+
     pinMode(R1, OUTPUT);
     pinMode(R2, OUTPUT);
     pinMode(L1, OUTPUT);
@@ -710,6 +735,9 @@ void setup() {
 
 
 void loop() {
+
+    checkButtonUpDownClick();
+
     if (Flag_Normal_Mode == true && WiFi.status() != WL_CONNECTED){
         // digitalWrite(LED_TEST_AP, LOW);
         if(flag_disconnect_to_sever == false){
